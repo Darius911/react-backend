@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import axios from 'axios';
 
 export default function Ticket() {
-  const [ticket, setTicket] = useState(null);
+  const [ticket, setTicket] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,7 +20,7 @@ export default function Ticket() {
         });
 
         console.log('Response data:', response.data); // Debugging line
-        setTicket(response.data);
+        setTicket(response.data.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching the ticket:', error);
