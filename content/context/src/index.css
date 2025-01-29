@@ -1,0 +1,26 @@
+.login-form {
+  border: 2px solid #ab3232;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.dashboard {
+  border: 2px solid #128214;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile {
+  border: 2px solid #1e19a3;
+  padding: 20px;
+}
+
+.dark {
+  background-color: black;
+  color: white;
+}
+
+.light {
+  background-color: rgb(214, 219, 188);
+  color: rgb(67, 12, 41);
+}
