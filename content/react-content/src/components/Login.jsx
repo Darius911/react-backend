@@ -1,24 +1,31 @@
-import UserContext from "../UserContext";
 import { useContext } from "react";
+import UserContext from "../UserContext";
 
 function Login() {
-  const [user, setUser] = useContext(UserContext);
+  const userContext = useContext(UserContext); // Pasiimame kontekstą
+  const { user, setUser } = userContext; // Išskaidome reikšmes
 
-  const changeUser = (user) => {
-    setUser(user);
+  const changeUser = (newUser) => {
+    setUser(newUser);
   };
-
 
   return (
     <div className="login-form">
-      <div>Login form</div>
-      <p>user : {user.name + " " + user.role}</p>
+      <div>Prisijungimo forma</div>
+      <p>Vartotojas: {user.name + " (" + user.role + ")"}</p>
 
-      {user.name === "Pavardenis" ? (
-        <p onClick={() => changeUser({ name: "Vardenis", role: "admin" })}>{user.name + " " + user.role}</p>
-      ) : (
-        <p onClick={() => changeUser({ name: "Pavardenis", role: "user" })}>{user.name + " " + user.role}</p>
-      )}
+      <p 
+        onClick={() =>
+          changeUser(
+            user.name === "Pavardenis"
+              ? { name: "Vardenis", role: "admin" }
+              : { name: "Pavardenis", role: "user" }
+          )
+        }
+        style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+      >
+        Keisti vartotoją
+      </p>
     </div>
   );
 }
