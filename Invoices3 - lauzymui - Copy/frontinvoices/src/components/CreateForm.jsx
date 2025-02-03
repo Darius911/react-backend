@@ -1,11 +1,7 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
-import moment from 'moment';
 export default function CreateForm() {
-  const today = new Date().toISOString().split('T')[0];
-  console.log(today);
-  
   const {
     register,
     handleSubmit,
@@ -16,7 +12,6 @@ export default function CreateForm() {
 
   const onSubmit = async (data) => {
     data.status = data.status || "draft"; // Jei status nėra, nustatome "draft"
-    data.due_date = moment(data.due_date).format('YYYY-MM-DD');
   // Siunčiame duomenis...
     try {
       const url = "http://localhost:3002/api/v1/invoices";
@@ -53,19 +48,21 @@ export default function CreateForm() {
             type="date"
             id="due_date"
             placeholder="Due date"
-            defaultValue={today}
-            min={today}
-            
             {...register("due_date", {
               required: "Due date is required",
               //date must be today or in the future
 
               
-              
+              validate: (value) => {
+                const today = new Date().toISOString().split("T")[0];
+                console.log("Today:", today);
+                console.log("Value:", value);
+                
+                return value >= today || "Date must be today or in the future";
+               
+              },
               
             })}
-           
-            
           />
           
           
