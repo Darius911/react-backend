@@ -30,7 +30,7 @@ export default function LoginForm() {
 
       console.log(response);
 
-      // setUser(response.data);
+      setUser(response.data);
     } catch (error) {
       // axios.isAxiosError(error) is a built-in method in Axios that checks whether the error object comes from an Axios request.
       if (axios.isAxiosError(error)) {
@@ -47,6 +47,9 @@ export default function LoginForm() {
         setError("An unespected error accured");
       }
     }
+  };
+  const handleLogout = () => {
+    setUser(null); 
   };
 
   return (
@@ -83,6 +86,13 @@ export default function LoginForm() {
 
       <button type="submit" className="w-1/3 text-white bg-pink-400 rounded-xl flex justify-center py-2">
         Login
+      </button>
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="w-1/3 text-white bg-red-400 rounded-xl flex justify-center py-2 mt-4"
+      >
+        Logout
       </button>
     </form>
   );

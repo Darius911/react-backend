@@ -11,11 +11,15 @@ export const UserContextProvider = ({children}) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
+             if(user){
+               
+            
+                
             const {data:response} = await axios.get(`${API_URL}/users/me`, {
                 withCredentials: true
             }); 
             setUser(response.data);
-            
+        }
             
             } catch (error) {
                console.log(error);

@@ -2,7 +2,7 @@ const express = require('express');
 const {createInvoice, getAllInvoices, updateInvoice, deleteInvoice, getFilteredInvoices} = require('../controlers/invoiceControler');
 const validate = require('../validators/validate');
 const invoiceValidator = require('../validators/invoices');
-// const { protect,allowAccessTo } = require('../controlers/authControler');
+
 
 
 
