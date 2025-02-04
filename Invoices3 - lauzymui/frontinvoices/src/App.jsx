@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router'
 import CreateForm from './components/CreateForm'
 import InvoicesAll from './components/InvoicesAll'
 import UpdateForm from './components/UpdateForm'
+import LoginForm from './components/LoginForm'
 
 function App() {
   
@@ -27,6 +28,11 @@ function App() {
         <Route
         path="/invoices/:invoice_code"
         element={<UpdateForm/>}
+        />
+
+        <Route
+        path="/login"
+        element={<LoginForm/>}
         />
       </Routes>
 
