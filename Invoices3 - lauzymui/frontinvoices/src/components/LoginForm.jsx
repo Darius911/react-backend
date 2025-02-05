@@ -1,8 +1,9 @@
-import { useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import { useState } from "react";
 import axios from "axios";
 import UserContext  from "../contexts/UserContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -16,6 +17,8 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const navigate = useNavigate();
 
   const onSubmit = async (formData) => {
     console.log(formData);
@@ -31,6 +34,8 @@ export default function LoginForm() {
       console.log(response);
 
       setUser(response.data);
+      setError(null);
+      navigate("/");
     } catch (error) {
       // axios.isAxiosError(error) is a built-in method in Axios that checks whether the error object comes from an Axios request.
       if (axios.isAxiosError(error)) {
@@ -48,9 +53,7 @@ export default function LoginForm() {
       }
     }
   };
-  const handleLogout = () => {
-    setUser(null); 
-  };
+  
 
   return (
     <form
@@ -87,13 +90,7 @@ export default function LoginForm() {
       <button type="submit" className="w-1/3 text-white bg-pink-400 rounded-xl flex justify-center py-2">
         Login
       </button>
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="w-1/3 text-white bg-red-400 rounded-xl flex justify-center py-2 mt-4"
-      >
-        Logout
-      </button>
+      
     </form>
   );
 }

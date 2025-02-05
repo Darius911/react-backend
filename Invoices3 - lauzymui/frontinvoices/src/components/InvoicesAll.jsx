@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./Header";
 import InvoiceCard from "./InvoiceCard";
+import Navigation from "./Navigation";
+const API_URL = import.meta.env.VITE_API_URL
 
 export default function InvoicesAll() {
   const [invoices, setInvoices] = useState([]);
@@ -13,12 +15,34 @@ export default function InvoicesAll() {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get("http://localhost:3002/api/v1/invoices");
+        const response = await axios.get(`${API_URL}/invoices`, {
+          withCredentials: true,
+        });
         setInvoices(response.data.data);
         setFilteredInvoices(response.data.data); // Initialize with all invoices
-      } catch (err) {
-        setError("Klaida gaunant duomenis");
-        console.error("Klaida gaunant sąskaitas:", err);
+      } catch (error) {
+        console.log(error);
+        
+        if (axios.isAxiosError(error)) {
+          // Check if response exists it means the request was successful and server responded with error
+          if (error.response) {
+            setError(
+              error.response.data.message ||
+                "An error occurred. Please try again."
+            );
+            //check if request exists and no response it means the request was not successful
+          } else if (error.request) {
+            setError(
+              "No response from server. Check your internet connection."
+            );
+          } else {
+            // Something happened in setting up the request, some other axios error eg. JavaScript runtime error, an issue with another part of your code
+            setError("Something went wrong. Please try again.");
+          }
+        } else {
+          //some other not axios error
+          setError("An unexpected error occurred.");
+        }
       } finally {
         setLoading(false);
       }
@@ -49,6 +73,7 @@ export default function InvoicesAll() {
 
   return (
     <section className="bg-gray-950 w-full min-h-screen">
+      <Navigation />
       <Header totalInvoices={filteredInvoices.length} filterStatus={filterStatus} setFilterStatus={setFilterStatus} />
       
       

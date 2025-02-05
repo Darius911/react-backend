@@ -8,6 +8,8 @@ export const UserContext = createContext(null);//reiksme pagal nutylejima
 
 export const UserContextProvider = ({children}) => {
     const [user, setUser] = useState(null);
+    //jai veiksmas use efekto baigtas
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -19,15 +21,20 @@ export const UserContextProvider = ({children}) => {
             
             
             } catch (error) {
-               console.log(error);
                 
+               setUser(null);
+               console.log(error.response.data.message);
+                
+            } finally{
+                setLoading(false);
             }
         };
         fetchUser();
     },[]);  
 
     return (
-        <UserContext.Provider value={{user, setUser}}>
+        //loading duoda zinoti kada baigtas veiksmas
+        <UserContext.Provider value={{user, setUser, loading}}>
             {children}
         
         </UserContext.Provider>

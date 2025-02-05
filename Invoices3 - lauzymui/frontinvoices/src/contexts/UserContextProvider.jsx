@@ -7,30 +7,31 @@ import UserContext from "./UserContext";
 
 export const UserContextProvider = ({children}) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-             if(user){
-               
-            
-                
             const {data:response} = await axios.get(`${API_URL}/users/me`, {
                 withCredentials: true
             }); 
             setUser(response.data);
-        }
+            
             
             } catch (error) {
-               console.log(error);
                 
+               setUser(null);
+               console.log(error.response.data.message);
+                
+            } finally{
+                setLoading(false);
             }
         };
         fetchUser();
     },[]);  
 
     return (
-        <UserContext.Provider value={{user, setUser}}>
+        <UserContext.Provider value={{user, setUser, loading}}>
             {children}
         
         </UserContext.Provider>

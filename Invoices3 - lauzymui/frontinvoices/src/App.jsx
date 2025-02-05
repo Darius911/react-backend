@@ -6,6 +6,7 @@ import CreateForm from './components/CreateForm'
 import InvoicesAll from './components/InvoicesAll'
 import UpdateForm from './components/UpdateForm'
 import LoginForm from './components/LoginForm'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   
@@ -23,7 +24,11 @@ function App() {
 
         <Route
         path="/"
-        element={<InvoicesAll/>}
+        element={
+        <ProtectedRoute>
+        <InvoicesAll/>
+        </ProtectedRoute>
+        }
         />
         <Route
         path="/invoices/:invoice_code"

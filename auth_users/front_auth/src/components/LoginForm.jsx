@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,6 +11,8 @@ export default function LoginForm() {
   const [error, setError] = useState(null);
 
   const { setUser } = useContext(UserContext);
+
+  const navagate = useNavigate();
 
   const {
     register,
@@ -29,6 +32,10 @@ export default function LoginForm() {
       // console.log(response.data);
 
       setUser(response.data);
+      //issivalome senus erorus
+      setError(null);
+      //naviguojame i home page
+      navagate("/");
     } catch (error) {
       // axios.isAxiosError(error) is a built-in method in Axios that checks whether the error object comes from an Axios request.
       if (axios.isAxiosError(error)) {
