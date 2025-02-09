@@ -2,7 +2,7 @@ const { sql }  = require('../dbConnection');
 
 exports.createUser = async (newUser) => {
     const users = await sql`
-    INSERT INTO users ${sql(newUser, 'username', 'email', 'password', 'role')} 
+    INSERT INTO users ${sql(newUser, 'name', 'email', 'password', 'role')} 
     RETURNING *;
     `;
     return users[0];
@@ -26,4 +26,6 @@ exports.getUserById = async (id) => {
       `;
     return users; 
   };
+
+  
   
