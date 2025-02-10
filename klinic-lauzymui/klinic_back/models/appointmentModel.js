@@ -89,6 +89,24 @@ exports.deleteAppointment = async (id, userId) => {
   return deletedAppointment[0];
 };
 
+exports.deleteMyAppointment = async (id, userId) => {
+  try {
+    // Ištrinti paskyrą, jei ji priklauso vartotojui arba administratoriui
+    const deletedAppointment = await sql`
+      DELETE FROM visits 
+      WHERE id = ${id} 
+      ${userId ? sql`AND user_id = ${userId}` : sql``}  
+      RETURNING *;  
+    `;
+    
+    // Jei įrašas buvo ištrintas, grąžiname pirmą (ir vienintelį) įrašą iš grąžintos masyvo
+    return deletedAppointment[0];
+  } catch (error) {
+    console.error("Error deleting appointment:", error.message);
+    throw new Error("Failed to delete appointment");
+  }
+};
+
 //filter appointments using query string
 exports.filterAppointments = async (filter) => {
   // Validate filter values to prevent SQL injection

@@ -7,6 +7,8 @@ import CreateAppointment from './components/CreateAppointment'
 import AppointmentsAll from './components/AppointmentsAll'
 import Navigation from './components/Navigation'
 import EditAppointment from './components/EditAppointment'
+import MyAppointmentsAll from './components/MyAppointmentsAll'
+import SignupForm from './components/SignupForm'
 
 function App() {
  
@@ -20,6 +22,11 @@ function App() {
         element={<LoginForm />} />
 
         <Route 
+        path="/signup" 
+        element={<SignupForm />} /> 
+        
+
+        <Route 
         path="/newappointments" 
         element={<CreateAppointment />} />
 
@@ -30,6 +37,11 @@ function App() {
         <Route 
         path="/appointments/:id"
         element={<EditAppointment />} />
+
+<Route 
+  path="/myappointments"
+  element={<MyAppointmentsAll />} 
+/>
       </Routes>
 
     </>

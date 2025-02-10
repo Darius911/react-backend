@@ -13,3 +13,4 @@ router.route('/login').post(loginValidator, validate, login);
 router.route('/logout').get(protect, logout);
 router.route('/me').get(protect,getAuthenticatedUser);
 module.exports = router;
+

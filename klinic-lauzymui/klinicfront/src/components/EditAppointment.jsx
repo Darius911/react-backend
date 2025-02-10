@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState, useEffect} from "react";
 import { useParams } from "react-router";
+import moment from "moment";
 const API_URL = import.meta.env.VITE_API_URL;
 export default function EditAppointment() {
   const {
@@ -14,7 +15,7 @@ export default function EditAppointment() {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(false);
   const { id } = useParams();
-
+  const today = moment().format("YYYY-MM-DD");
   useEffect(() => {
     const fetchAppointment = async () => {
       try {
@@ -26,7 +27,7 @@ export default function EditAppointment() {
         // Užpildome formą su gautais duomenimis
         setValue("owner_name", response.data.owner_name);
         setValue("pets_name", response.data.pets_name);
-        setValue("date", response.data.date);
+        setValue("date", response.data.date.toISOString().split("T")[0]);
         setValue("time", response.data.time);
         setValue("notes", response.data.notes);
       } catch (error) {
@@ -52,6 +53,8 @@ export default function EditAppointment() {
     if (formData.date) {
       const dateObj = new Date(formData.date);
       formData.date = dateObj.toISOString().split("T")[0]; // Paimama tik data be laiko
+      console.log(formData.date);
+      
     }
 
     console.log(formData);
@@ -179,6 +182,8 @@ export default function EditAppointment() {
                      focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ml-10"
                     
                     {...register("date", { required: "Date is required" })}
+                    defaultValue={today}
+                    min={today}
                   />
                 </div>
                 {errors.date && (

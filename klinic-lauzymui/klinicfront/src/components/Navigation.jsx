@@ -27,6 +27,8 @@ export default function Navigation() {
             >
                 Logout</button>
         )} 
+        <NavLink className=" rounded-xl p-1" to="/myappointments">        
+        My appointments</NavLink>
         </nav>
     );
 } 

@@ -18,7 +18,7 @@ export default function CreateAppointment() {
   } = useForm();
 
   const onSubmit = async (formData) => {
-    console.log(formData);
+    // console.log("Formos duomenys" +formData.date);
 
     try {
       const { data: response } = await axios.post(

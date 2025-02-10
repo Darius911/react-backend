@@ -1,5 +1,5 @@
 const express = require('express');
-const { createAppointment, getAllAppointments, getAppointmentById, editMyAppointment,getMyAppointments, deleteAppointment, updateAppointment, getFilteredAppointments, createAppointmentRating } = require('../controlers/appointmentControler');
+const { createAppointment, getAllAppointments, getAppointmentById, editMyAppointment,getMyAppointments, deleteAppointment, updateAppointment, getFilteredAppointments, createAppointmentRating, deleteMyAppointment } = require('../controlers/appointmentControler');
 const appointmentValidator  = require('../validators/appointments');
 const appointmentRatingValidator = require('../validators/appointmentsRating');
 const appointmentEditValidator = require('../validators/appointmentsEdit');
@@ -22,10 +22,12 @@ router.route('/:id')
 .patch(protect, allowAccessTo('user','admin'),appointmentEditValidator,validate,  editMyAppointment)
 .delete(protect, allowAccessTo('admin','user'), deleteAppointment)
 
-.put(protect, allowAccessTo('admin'),appointmentValidator,validate, updateAppointment);
+
+.put(protect, allowAccessTo('admin','user'),appointmentValidator,validate, updateAppointment);
 
 router.route('/:id/myappointments')
-.get(protect, allowAccessTo('user','admin'),getMyAppointments);
+.get(protect, allowAccessTo('user','admin'),getMyAppointments)
+.delete(protect, deleteMyAppointment);
 
 router.route('/:id/rating').patch(protect, allowAccessTo('user'), appointmentRatingValidator,validate, createAppointmentRating);
 

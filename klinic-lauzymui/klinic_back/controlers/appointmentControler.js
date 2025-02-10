@@ -1,10 +1,14 @@
-const { createAppointment, getAllAppointments, editAppointment, getAppointmentById, getUserAppointments, deleteAppointment, updateAppointment,  filterAppointments, createAppointmentRating } = require('../models/appointmentModel');
+const { createAppointment, getAllAppointments, editAppointment, getAppointmentById, getUserAppointments, deleteAppointment, updateAppointment,  filterAppointments, createAppointmentRating, deleteMyAppointment } = require('../models/appointmentModel');
 const AppError = require('../utilities/appError');
 
 exports.createAppointment = async (req, res, next) => {
     try {
       const newAppointment = { ...req.body, user_id: req.user.id };
       
+      
+      newAppointment.date = new Date(newAppointment.date);
+      console.log(newAppointment);
+
       const createdAppointment = await createAppointment(newAppointment);
   
       res.status(201).json({
@@ -18,7 +22,9 @@ exports.createAppointment = async (req, res, next) => {
 
   exports.getAllAppointments = async (req, res, next) => {
     try {
+
       const appointments = await getAllAppointments();
+      
       res.status(200).json({
         status: 'success',
         data: appointments,
@@ -32,7 +38,8 @@ exports.createAppointment = async (req, res, next) => {
     try {
         const { id } = req.params;
         const newAppointmentData = req.body;
-
+        newAppointmentData.date = new Date(newAppointmentData.date);
+        console.log(newAppointmentData);
         // Tikriname, ar vartotojas yra adminas
         const isAdmin = req.user.role === "admin";
 
@@ -95,7 +102,7 @@ exports.editMyAppointment = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedVisit = await editAppointment(id, req.user.id, req.body);
-
+    updatedVisit.date = new Date(updatedVisit.date);
     if (!updatedVisit) {
       return next(new AppError("Visit not found or not yours", 403));
     }
@@ -131,6 +138,45 @@ exports.deleteAppointment = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+exports.deleteMyAppointment = async (req, res, next) => {
+  try {
+    const { id } = req.params; // Paimame `id` iš užklausos parametrų
+    const userId = req.user.id; // Paimame vartotojo `id` iš `req.user` objekto, kurį užpildo autentifikacija
+
+    // Patikriname, ar šis paskyras priklauso šiam vartotojui
+    const isAdmin = req.user.role === 'admin';  // Jei vartotojas yra admin, jis gali ištrinti bet kurį įrašą
+
+    const appointment = await deleteMyAppointment.findOne({
+      where: {
+        id,
+        // Jei vartotojas nėra admin, patikriname, ar paskyra priklauso jam
+        userId: isAdmin ? undefined : userId,  // Jei admin, nereikia patikrinti userId
+      },
+    });
+
+    // Jei įrašas neegzistuoja arba nepriklauso šiam vartotojui
+    if (!appointment) {
+      return next(new AppError('Appointment not found or not yours', 403));
+    }
+
+    // Jei įrašas priklauso vartotojui arba administratorius, ištriname
+    await appointment.destroy();  // Ištriname paskyrą iš duomenų bazės
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Your appointment was deleted successfully',  // Grąžiname sėkmės žinutę
+    });
+  } catch (error) {
+    next(error);  // Pereina prie klaidų tvarkymo middleware
+  }
+};
+
+
+
+
 
 //filter ASC/DESC
 
