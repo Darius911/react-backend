@@ -1,5 +1,5 @@
 import {Link} from "react-router";
-import StarsRating from "./StarsRating";
+
 
 export default function AppointmentCard({ appointment, deleteAppointment }) {
  
@@ -11,7 +11,6 @@ export default function AppointmentCard({ appointment, deleteAppointment }) {
     <div className="">{appointment.date.split("T")[0]}</div>
     <div className="">{appointment.time}</div>
     <div className="">{appointment.notes}</div>
-    <div><StarsRating rating={appointment.rating} /></div>
     
     
     

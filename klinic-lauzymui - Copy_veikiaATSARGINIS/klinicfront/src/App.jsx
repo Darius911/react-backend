@@ -9,7 +9,7 @@ import Navigation from './components/Navigation'
 import EditAppointment from './components/EditAppointment'
 import MyAppointmentsAll from './components/MyAppointmentsAll'
 import SignupForm from './components/SignupForm'
-import StarsRating from './components/StarsRating'
+
 function App() {
  
 
@@ -37,9 +37,6 @@ function App() {
         <Route 
         path="/appointments/:id"
         element={<EditAppointment />} />
-        <Route 
-        path="/appointments/:id" 
-        element={<StarsRating />} />
 
 <Route 
   path="/myappointments"

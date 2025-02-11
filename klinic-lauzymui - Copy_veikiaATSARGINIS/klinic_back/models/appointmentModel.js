@@ -109,29 +109,21 @@ exports.deleteMyAppointment = async (id, userId) => {
 
 //filter appointments using query string
 exports.filterAppointments = async (filter) => {
-  try {
-    console.log("Filtering with:", filter);  // 🛠 Patikrink, kokius filtrus gauna DB užklausa
+  // Validate filter values to prevent SQL injection
+  const validDirections = ['ASC', 'DESC'];
+  const sortDirection = validDirections.includes(filter.sort?.toUpperCase())
+    ? filter.sort.toUpperCase()
+    : 'ASC';
 
-    const validDirections = ['ASC', 'DESC'];
-    const sortDirection = validDirections.includes(filter.sort?.toUpperCase())
-      ? filter.sort.toUpperCase()
-      : 'ASC';
-
-    const appointments = await sql`
-      SELECT visits.* 
-      FROM visits
-      WHERE visits.date <= ${filter.date || '9999-12-31'}  -- Jei nėra datos, leidžia visus
-        ${filter.owner_name ? sql`AND visits.owner_name LIKE ${'%' + filter.owner_name + '%'}` : sql``}
-        ${filter.pets_name ? sql`AND visits.pets_name LIKE ${'%' + filter.pets_name + '%'}` : sql``}
-      ORDER BY visits.pets_name ${sql.unsafe(sortDirection)}
-    `;
-
-    console.log("DB query result:", appointments);  // 🛠 Ar duomenys ateina iš DB?
-    return appointments;
-  } catch (error) {
-    console.error("Error in filterAppointments:", error); // 🛠 Debug klaida
-    throw error;
-  }
+  const appointments = await sql`
+    SELECT visits.* 
+    FROM visits
+    WHERE visits.date <= ${filter.date}
+      ${filter.owner_name ? sql`AND visits.owner_name LIKE ${'%' + filter.owner_name + '%'}` : sql``}
+      ${filter.pets_name ? sql`AND visits.pets_name LIKE ${'%' + filter.pets_name + '%'}` : sql``}
+    ORDER BY visits.pets_name ${sql.unsafe(sortDirection)}   
+  `;
+  return appointments;
 };
 
 

@@ -181,39 +181,42 @@ exports.deleteMyAppointment = async (req, res, next) => {
 //filter ASC/DESC
 
 exports.getFilteredAppointments = async (req, res, next) => {
-  try { 
+  try {
     const filter = req.query;
-    console.log("Received filters:", filter);  // 🛠 Patikrink, ką backend gauna
+    console.log("Received filters:", req.query);
 
-    // Jei filtrai tušti, gražina visus įrašus
+    // If no query string, return all appointments
     if (Object.keys(filter).length === 0) {
       const appointments = await getAllAppointments();
-      res.status(200).json({ status: 'success', data: appointments });
+      res.status(200).json({
+        status: 'success',
+        data: appointments,
+      });
       return;
     }
 
-    // Tikrina ar filtrai leidžiami
+    // Validate filter fields
     const allowedFields = ['date', 'owner_name', 'pets_name', 'sort'];
     for (const key of Object.keys(filter)) {
       if (!allowedFields.includes(key)) {
-        return res.status(400).json({ 
-          status: 'fail', 
-          message: `Invalid filter field: '${key}'` 
+        return res.status(400).json({
+          status: 'fail',
+          message: `Invalid filter field: '${key}'. Allowed fields are: ${allowedFields.join(', ')}`,
         });
       }
     }
 
-    // Filtruojami įrašai
+    // If query string, return filtered appointments
     const filteredAppointments = await filterAppointments(filter);
-    console.log("Filtered appointments:", filteredAppointments);  // 🛠 Patikrink rezultatą
 
-    res.status(200).json({ status: 'success', data: filteredAppointments });
+    res.status(200).json({
+      status: 'success',
+      data: filteredAppointments,
+    });
   } catch (error) {
-    console.error("Error in getFilteredAppointments:", error); // 🛠 Log'uok klaidą
     next(error);
   }
 };
-
 
 
 
