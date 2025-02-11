@@ -11,11 +11,12 @@ export default function AppointmentCard({ appointment, deleteAppointment }) {
     <div className="">{appointment.date.split("T")[0]}</div>
     <div className="">{appointment.time}</div>
     <div className="">{appointment.notes}</div>
-    <div><StarsRating rating={appointment.rating} /></div>
+    <div>Visit rating : {appointment.rating}</div>
     
     
     
     <div><Link to={`/appointments/${appointment.id}`}>Update appointment</Link></div>
+    <div><Link to={`/myappointments/rating/${appointment.id}`}>Rate</Link></div>
     <div><button onClick={() => deleteAppointment(appointment.id)}>Delete</button></div>
    </div>
   )

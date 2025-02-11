@@ -38,7 +38,7 @@ function App() {
         path="/appointments/:id"
         element={<EditAppointment />} />
         <Route 
-        path="/appointments/:id" 
+        path="/myappointments/rating/:id" 
         element={<StarsRating />} />
 
 <Route 

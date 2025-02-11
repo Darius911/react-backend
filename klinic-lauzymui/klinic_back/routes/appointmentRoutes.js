@@ -29,7 +29,7 @@ router.route('/:id/myappointments')
 .get(protect, allowAccessTo('user','admin'),getMyAppointments)
 .delete(protect, deleteMyAppointment);
 
-router.route('/:id/rating').patch(protect, allowAccessTo('user'), appointmentRatingValidator,validate, createAppointmentRating);
+router.route('/:id/rating').patch(protect, allowAccessTo('user','admin'), appointmentRatingValidator,validate, createAppointmentRating);
 
 
 
