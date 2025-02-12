@@ -49,17 +49,15 @@ export default function CreateAppointment() {
   };
 
   return (
-    <div className="flex flex-col items-center w-5xl mx-auto ">
-        <div className="bg-blue-950 w-full text-white px-4 py-2 rounded-md flex justify-center">
-        <button
-        className="bg-blue-950 w-full text-white px-4 py-2 rounded-md flex justify-center"
+    <div className="flex flex-col items-center w-xl mx-auto">
+      <button
+        className="bg-blue-500 w-full text-white px-4 py-2 rounded-md"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-controls="collapseForm"
       >
         + Add Appointment
       </button>
-        </div>
 
       <div
         className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -67,8 +65,8 @@ export default function CreateAppointment() {
         }`}
         id="collapseForm"
       >
-        <div className="flex mt-2 p-4 rounded-md shadow">
-          <form className="w-4xl mx-auto flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <div className="mt-2 p-4 rounded-md shadow">
+          <form className="w-xl mx-auto" onSubmit={handleSubmit(onSubmit)}>
             {/* Owner Name */}
             <div className="flex flex-col">
               <div className="flex items-center gap-4">
@@ -228,11 +226,11 @@ export default function CreateAppointment() {
               )}
             </div>
 
-            <div className="flex justify-end ">
+            <div className="flex justify-center">
             <button
               type="submit"
               onClick={() => setIsOpen(!isOpen)}
-              className="bg-blue-950 hover:bg-blue-700 font-bold py-2 px-4 rounded item text-white mt-4"
+              className="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded item text-white"
             >
               Add appointment
             </button>

@@ -2,9 +2,7 @@ import { CiStar } from "react-icons/ci";
 import { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
-import Navigation from "./Navigation";
-import Header from "./Header";
-import Footer from "./Footer";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function StarsRating({ onRate }) {
@@ -41,9 +39,6 @@ export default function StarsRating({ onRate }) {
 };
 
   return (
-    <>
-    <Header/>
-    <Navigation />
     <div className="flex space-x-1">
       {[1, 2, 3, 4, 5].map((star) => (
         <CiStar
@@ -59,7 +54,5 @@ export default function StarsRating({ onRate }) {
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {message && <p className="text-green-500 text-sm">{message}</p>}
     </div>
-    <Footer/>
-    </>
   );
 }

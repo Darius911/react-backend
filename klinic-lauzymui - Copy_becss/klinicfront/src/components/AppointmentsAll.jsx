@@ -3,9 +3,7 @@ import axios from "axios";
 import AppointmentCard from "./AppointmentCard";
 import CreateAppointment from "./CreateAppointment";
 import FilterForm from "./FilterForm";
-import Navigation from "./Navigation";
-import Header from "./Header";
-import Footer from "./Footer";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AppointmentsAll() {
@@ -47,8 +45,6 @@ export default function AppointmentsAll() {
 
   return (
     <section className="">
-      <Header/>
-      <Navigation/>
       <CreateAppointment />
       <FilterForm 
         setAppointments={setAppointments} 
@@ -65,7 +61,6 @@ export default function AppointmentsAll() {
           />
         ))}
       </div>
-      <Footer/>
     </section>
   );
 }

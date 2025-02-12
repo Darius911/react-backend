@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AppointmentCard from "./AppointmentCard";
 import { useParams } from "react-router";
-import Navigation from "./Navigation";
-import CreateAppointment from "./CreateAppointment";
-import Header from "./Header";
-import Footer from "./Footer";
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3002/api/v1"; // nurodyti savo API URL
 
 export default function MyAppointmentsAll() {
@@ -63,10 +60,6 @@ export default function MyAppointmentsAll() {
   };
 
   return (
-    <>
-    <Header/>
-    <Navigation/>
-    <CreateAppointment />
     <div>
       {loading && <p>Loading appointments...</p>}
       {error && <p>{error}</p>}
@@ -78,7 +71,5 @@ export default function MyAppointmentsAll() {
         />
       ))}
     </div>
-    <Footer/>
-    </>
   );
 }

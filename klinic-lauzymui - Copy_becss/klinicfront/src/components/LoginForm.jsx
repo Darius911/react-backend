@@ -56,45 +56,41 @@ export default function LoginForm() {
   
 
   return (
-    <div className="flex justify-center items-center h-screen ">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 w-lg  px-8 p-16 rounded-lg"
-      >
-        
-        <div>
-        <label htmlFor="email" className="block text-md font-medium">
-          Email
-        </label>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-4 max-w-lg mx-auto flex flex-col w-full h-screen "
+    >
+      <div>{error}</div>
+      <div>
+        <label className="block text-sm font-medium ">Email</label>
         <input
-          id="email"
           type="email"
-          {...register("email", { required: "Email is required" })}
-          className="mt-1  input input-bordered w-full border border-b-blue-950 rounded-md p-1"
+          {...register("email")}
+          className="mt-1 w-full border border-green-500  rounded-xl "
           placeholder="Enter your email"
         />
-        {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+        {errors.email && (
+          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-md font-medium">
-          Password
-        </label>
+        <label className="block text-sm font-medium ">Password</label>
         <input
-          id="password"
           type="password"
-          {...register("password", { required: "Password is required" })}
-          className="mt-1  input input-bordered w-full border border-b-blue-950 rounded-md p-1"
+          {...register("password")}
+          className="mt-1 w-full border border-green-500  rounded-xl "
           placeholder="Enter your password"
         />
-        {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="text-red-500 text-sm">{errors.password.message}</p>
+        )}
       </div>
-        <div className="flex justify-center">
-          <button type="submit" className="w-1/3  bg-blue-950 rounded-xl text-white py-2">
-            Login
-          </button>
-        </div>
-      </form>
-    </div>
+
+      <button type="submit" className="w-1/3  bg-pink-400 rounded-xl flex justify-center py-2">
+        Login
+      </button>
+      
+    </form>
   );
 }

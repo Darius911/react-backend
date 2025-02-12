@@ -15,7 +15,7 @@ function App() {
 
   return (
     <>
-    
+    <Navigation />
       <Routes>
         <Route 
         path="/" 

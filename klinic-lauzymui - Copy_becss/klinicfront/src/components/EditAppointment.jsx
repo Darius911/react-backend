@@ -1,34 +1,73 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useState, useEffect} from "react";
+import { useParams } from "react-router";
 import moment from "moment";
-
 const API_URL = import.meta.env.VITE_API_URL;
-
-export default function CreateAppointment() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState("");
-  const today = moment().format("YYYY-MM-DD");
-
+export default function EditAppointment() {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    // setValue, // Naudojame setValue, kad galėtume užpildyti formą esamais duomenimis
   } = useForm();
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState(false);
+  const { id } = useParams();
+  const today = moment().format("YYYY-MM-DD");
+  useEffect(() => {
+    const fetchAppointment = async () => {
+      try {
+        const { data: response } = await axios.get(`${API_URL}/appointments/${id}`, {
+          withCredentials: true,
+          
+        });
+        console.log(response);
+        // Užpildome formą su gautais duomenimis
+        setValue("owner_name", response.data.owner_name);
+        setValue("pets_name", response.data.pets_name);
+        setValue("date", response.data.date.toISOString().split("T")[0]);
+        setValue("time", response.data.time);
+        setValue("notes", response.data.notes);
+      } catch (error) {
+        setError("Failed to load appointment data. Please try again.");
+      }
+    };
+
+    if (id) {
+      fetchAppointment();
+    }
+  }, [id, setValue]);
 
   const onSubmit = async (formData) => {
-    // console.log("Formos duomenys" +formData.date);
+    
+    if (formData.time) {
+      formData.time = new Date(`1970-01-01T${formData.time}`).toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        
+      });
+    }
 
+    if (formData.date) {
+      const dateObj = new Date(formData.date);
+      formData.date = dateObj.toISOString().split("T")[0]; // Paimama tik data be laiko
+      console.log(formData.date);
+      
+    }
+
+    console.log(formData);
     try {
-      const { data: response } = await axios.post(
-        `${API_URL}/appointments`,
+      
+      const { data: response } = await axios.put(
+        `${API_URL}/appointments/${id}`,
         formData,
         { withCredentials: true }
       );
-
+      
       console.log(response);
-      setMessage("Appointment successfully created!");
+      setMessage("Appointment successfully updated!");
       setError(null);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -49,26 +88,8 @@ export default function CreateAppointment() {
   };
 
   return (
-    <div className="flex flex-col items-center w-5xl mx-auto ">
-        <div className="bg-blue-950 w-full text-white px-4 py-2 rounded-md flex justify-center">
-        <button
-        className="bg-blue-950 w-full text-white px-4 py-2 rounded-md flex justify-center"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-        aria-controls="collapseForm"
-      >
-        + Add Appointment
-      </button>
-        </div>
-
-      <div
-        className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        }`}
-        id="collapseForm"
-      >
-        <div className="flex mt-2 p-4 rounded-md shadow">
-          <form className="w-4xl mx-auto flex-col" onSubmit={handleSubmit(onSubmit)}>
+    <div className="mt-2 p-4 rounded-md shadow">
+          <form className="w-xl mx-auto" onSubmit={handleSubmit(onSubmit)}>
             {/* Owner Name */}
             <div className="flex flex-col">
               <div className="flex items-center gap-4">
@@ -159,9 +180,10 @@ export default function CreateAppointment() {
                     className="flex-1 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset 
                      ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                      focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ml-10"
+                    
+                    {...register("date", { required: "Date is required" })}
                     defaultValue={today}
                     min={today}
-                    {...register("date", { required: "Date is required" })}
                   />
                 </div>
                 {errors.date && (
@@ -183,7 +205,7 @@ export default function CreateAppointment() {
                     className="flex-1 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset 
                      ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                      focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    defaultValue="00:00"
+                    
                     {...register("time", { required: "Time is required" })}
                   />
                 </div>
@@ -228,19 +250,11 @@ export default function CreateAppointment() {
               )}
             </div>
 
-            <div className="flex justify-end ">
-            <button
-              type="submit"
-              onClick={() => setIsOpen(!isOpen)}
-              className="bg-blue-950 hover:bg-blue-700 font-bold py-2 px-4 rounded item text-white mt-4"
-            >
-              Add appointment
-            </button>
-            </div>
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Submit
+        </button>
             {message && <p className="text-green-500 mt-4">{message}</p>}
           </form>
         </div>
-      </div>
-    </div>
   );
 }
