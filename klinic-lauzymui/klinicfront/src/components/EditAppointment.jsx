@@ -88,129 +88,103 @@ export default function EditAppointment() {
   };
 
   return (
-    <div className="mt-2 p-4 rounded-md shadow">
-          <form className="w-xl mx-auto" onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex flex-col mt-2 p-4 rounded-md shadow bg-white w-full">
+          <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
             {/* Owner Name */}
             <div className="flex flex-col">
-              <div className="flex items-center gap-4">
-                <label className="w-32" htmlFor="owner_name">
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <label
+                  className="md:w-32 sm:w-32 xs:w-full w-full block text-left"
+                  htmlFor="owner_name"
+                >
                   Owner Name
                 </label>
                 <input
                   type="text"
                   id="owner_name"
                   placeholder="Name"
-                  className="flex-1 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset 
-                   ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                   focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="w-full sm:w-3/4 md:w-3/4 rounded-md border py-2 px-3 shadow-sm focus:ring-2 focus:ring-indigo-600"
                   {...register("owner_name", {
                     required: "Name field cannot be empty",
-                    pattern: {
-                      value:
-                        /^[A-ZĄČĘĖĮŠŲŪŽ][a-ząčęėįšųūž]+(\s[A-ZĄČĘĖĮŠŲŪŽa-ząčęėįšųūž]+)*$/,
-                      message: "Name must start with an uppercase letter",
-                    },
-                    minLength: {
-                      value: 2,
-                      message: "Field should be at least 2 characters",
-                    },
-                    maxLength: {
-                      value: 80,
-                      message: "Field should be at most 80 characters",
-                    },
                   })}
                 />
               </div>
               {errors.owner_name && (
-                <p className="text-red-500 text-sm mt-1 ml-36">
+                <p className="text-red-500 text-sm mt-1 text-left xs:ml-0 sm:ml-73 md:ml-73">
                   {errors.owner_name.message}
                 </p>
               )}
             </div>
 
             {/* Pet Name */}
-            <div className="flex flex-col">
-              <div className="flex items-center gap-4">
-                <label className="w-32" htmlFor="pets_name">
-                  Pet Name
-                </label>
-                <input
-                  type="text"
-                  id="pets_name"
-                  placeholder="Pet Name"
-                  className="flex-1 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset 
-                   ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                   focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  {...register("pets_name", {
-                    required: "Pet name field cannot be empty",
-                    pattern: {
-                      value:
-                        /^[A-ZĄČĘĖĮŠŲŪŽ][a-ząčęėįšųūž]+(\s[A-ZĄČĘĖĮŠŲŪŽa-ząčęėįšųūž]+)*$/,
-                      message: "Pet name must start with an uppercase letter",
-                    },
-                    minLength: {
-                      value: 2,
-                      message: "Field should be at least 2 characters",
-                    },
-                    maxLength: {
-                      value: 80,
-                      message: "Field should be at most 80 characters",
-                    },
-                  })}
-                />
-              </div>
-              {errors.pets_name && (
-                <p className="text-red-500 text-sm mt-1 ml-36">
-                  {errors.pets_name.message}
-                </p>
-              )}
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <label
+                className="md:w-32 sm:w-32 xs:w-full w-full block text-left"
+                htmlFor="pets_name"
+              >
+                Pet Name
+              </label>
+              <input
+                type="text"
+                id="pets_name"
+                placeholder="Pet Name"
+                className="w-full sm:w-3/4 md:w-3/4 rounded-md border py-2 px-3 shadow-sm focus:ring-2 focus:ring-indigo-600"
+                {...register("pets_name", {
+                  required: "Pet name field cannot be empty",
+                })}
+              />
             </div>
+            {errors.pets_name && (
+              <p className="text-red-500 text-sm mt-1 text-left xs:ml-0 sm:ml-73 md:ml-73">
+                {errors.pets_name.message}
+              </p>
+            )}
 
             {/* Date and Time */}
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
               {/* Date Input */}
-              <div className="flex flex-col w-1/2">
-                <div className="flex items-center gap-2">
-                  <label className="w-24" htmlFor="date">
+              <div className="flex flex-col w-full sm:w-1/2">
+                <div className="flex flex-col sm:flex-row items-center gap-2 w-full">
+                  <label
+                    className="md:w-32 sm:w-32 xs:w-full w-full block text-left"
+                    htmlFor="date"
+                  >
                     Date
                   </label>
                   <input
                     type="date"
                     id="date"
-                    className="flex-1 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset 
-                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                     focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ml-10"
-                    
+                    className="w-full sm:w-35 md:w-35 rounded-md border py-2 px-3 shadow-sm focus:ring-2 focus:ring-indigo-600"
                     {...register("date", { required: "Date is required" })}
                     defaultValue={today}
                     min={today}
                   />
                 </div>
                 {errors.date && (
-                  <p className="text-red-500 text-sm mt-1 ml-36">
+                  <p className="text-red-500 text-sm mt-1 text-left sm:ml-28">
                     {errors.date.message}
                   </p>
                 )}
               </div>
 
               {/* Time Input */}
-              <div className="flex flex-col w-1/2">
-                <div className="flex items-center gap-2">
-                  <label className="w-24" htmlFor="time">
+              <div className="flex flex-col w-full sm:w-1/2">
+                <div className="flex flex-col sm:flex-row items-center gap-2 w-full">
+                  <label
+                    className="md:w-fit sm:w-fit xs:w-full w-full block text-left"
+                    htmlFor="time"
+                  >
                     Time
                   </label>
                   <input
                     type="time"
                     id="time"
-                    className="flex-1 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset 
-                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                     focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    
+                    className="w-full sm:w-58 md:w-58 rounded-md border py-2 px-3 shadow-sm focus:ring-2 focus:ring-indigo-600"
                     {...register("time", { required: "Time is required" })}
                   />
                 </div>
                 {errors.time && (
-                  <p className="text-red-500 text-sm mt-1 ml-26">
+                  <p className="text-red-500 text-sm mt-1 text-left sm:ml-28">
                     {errors.time.message}
                   </p>
                 )}
@@ -218,42 +192,31 @@ export default function EditAppointment() {
             </div>
 
             {/* Notes */}
-            <div className="flex flex-col">
-              <div className="flex items-center gap-4">
-                <label className="w-32" htmlFor="notes">
-                  Notes
-                </label>
-                <input
-                  type="text"
-                  id="notes"
-                  placeholder="Notes"
-                  className="flex-1 rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset 
-       ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-       focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  {...register("notes", {
-                    required: "Notes field cannot be empty",
-                    minLength: {
-                      value: 2,
-                      message: "Field should be at least 2 characters",
-                    },
-                    maxLength: {
-                      value: 255,
-                      message: "Field should be at most 255 characters",
-                    },
-                  })}
-                />
-              </div>
-              {errors.notes && (
-                <p className="text-red-500 text-sm mt-1 ml-36">
-                  {errors.notes.message}
-                </p>
-              )}
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <label
+                className="md:w-32 sm:w-32 xs:w-full w-full block text-left"
+                htmlFor="notes"
+              >
+                Notes
+              </label>
+              <textarea
+                id="notes"
+                placeholder="Notes"
+                className="w-full sm:w-3/4 md:w-3/4 rounded-md border py-2 px-3 shadow-sm focus:ring-2 focus:ring-indigo-600"
+                {...register("notes", {
+                  required: "Notes field cannot be empty",
+                })}
+              ></textarea>
             </div>
 
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Submit
-        </button>
-            {message && <p className="text-green-500 mt-4">{message}</p>}
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="bg-blue-950 hover:bg-blue-700 font-bold py-2 px-4 rounded text-white"
+              >
+                Update
+              </button>
+            </div>
           </form>
         </div>
   );
