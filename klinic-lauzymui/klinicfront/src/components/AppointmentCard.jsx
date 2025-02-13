@@ -3,20 +3,20 @@ import { FaRegWindowClose } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
 export default function AppointmentCard({ appointment, deleteAppointment }) {
   return (
-    <div className="flex  md:flex-row sm:flex-row justify-between gap-4 items-center  max-w-3xl mx-auto  xs:px-4 py-2 mb-4 rounded-lg shadow-md  border-box ">
+    <div className="flex  md:flex-row sm:flex-row  gap-4 items-center  max-w-3xl mx-auto  xs:px-4 py-2 mb-4 rounded-lg shadow-md  border-box ">
       <div className="flex self-start">
         <button onClick={() => deleteAppointment(appointment.id)}>
           <FaRegWindowClose className="w-8 h-8 p-1 hover:text-white hover:bg-gray-600" />
         </button>
       </div>
-      <div className="flex xs:flex-col  ">
-        <div className="text-3xl font-bolder text-blue-800 self-start">
+      <div className="flex  flex-col  border-box w-2/3 ">
+        <div className="text-3xl font-bolder text-blue-800 ">
           {appointment.pets_name}
         </div>
         <div className="text-xl text-cyan-900 self-start">
           Owner:{appointment.owner_name}
         </div>
-        <div className="">{appointment.notes}</div>
+        <div className="self-start">{appointment.notes}</div>
         <div className="flex  md:flex-row sm:flex-row  xs:gap-4">
           <div className="flex items-center flex-row">
             rate : {appointment.rating}
@@ -30,8 +30,8 @@ export default function AppointmentCard({ appointment, deleteAppointment }) {
           </div>
         </div>
       </div>
-      <div className="flex md:flex-row self-start gap-2">
-        <div className="">{appointment.date.split("T")[0]}</div>
+      <div className="flex md:flex-row self-start justify-end gap-2 ">
+        <div className="self-end">{appointment.date.split("T")[0]}</div>
         <div className="">{appointment.time}</div>
       </div>
     </div>
