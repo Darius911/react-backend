@@ -48,7 +48,7 @@ export default function CreateAppointment() {
   };
 
   return (
-    <div className="flex flex-col items-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col items-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 border-box">
       <div className="bg-blue-950 w-full text-white px-4 py-2 rounded-md flex justify-center">
         <button
           className="w-full text-white font-semibold py-2 rounded-md"
@@ -67,7 +67,7 @@ export default function CreateAppointment() {
         id="collapseForm"
       >
         <div className="flex flex-col mt-2 p-4 rounded-md shadow bg-white">
-          <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <form className="w-full space-y-4 border-box" onSubmit={handleSubmit(onSubmit)}>
             {/* Owner Name */}
             <div className="flex flex-col">
               <div className="flex flex-col sm:flex-row items-center gap-4">
