@@ -1,83 +1,40 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useState, useEffect} from "react";
-import { useParams } from "react-router";
 import moment from "moment";
-import Header from "./Header";
-import Navigation from "./Navigation";
-import Footer from "./Footer";
+
 const API_URL = import.meta.env.VITE_API_URL;
-export default function EditAppointment() {
+
+export default function CreateAppointment() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
+  const today = moment().format("YYYY-MM-DD");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    // setValue, // Naudojame setValue, kad galėtume užpildyti formą esamais duomenimis
   } = useForm();
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState(false);
-  const { id } = useParams();
-  const today = moment().format("YYYY-MM-DD");
-  useEffect(() => {
-    const fetchAppointment = async () => {
-      try {
-        const { data: response } = await axios.get(`${API_URL}/appointments/${id}`, {
-          withCredentials: true,
-          
-        });
-        console.log(response);
-        // Užpildome formą su gautais duomenimis
-        setValue("owner_name", response.data.owner_name);
-        setValue("pets_name", response.data.pets_name);
-        setValue("date", response.data.date.toISOString().split("T")[0]);
-        setValue("time", response.data.time);
-        setValue("notes", response.data.notes);
-      } catch (error) {
-        setError("Failed to load appointment data. Please try again.");
-      }
-    };
-
-    if (id) {
-      fetchAppointment();
-    }
-  }, [id, setValue]);
 
   const onSubmit = async (formData) => {
-    
-    if (formData.time) {
-      formData.time = new Date(`1970-01-01T${formData.time}`).toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        
-      });
-    }
+    // console.log("Formos duomenys" +formData.date);
 
-    if (formData.date) {
-      const dateObj = new Date(formData.date);
-      formData.date = dateObj.toISOString().split("T")[0]; // Paimama tik data be laiko
-      console.log(formData.date);
-      
-    }
-
-    console.log(formData);
     try {
-      
-      const { data: response } = await axios.put(
-        `${API_URL}/appointments/${id}`,
+      const { data: response } = await axios.post(
+        `${API_URL}/appointments`,
         formData,
         { withCredentials: true }
       );
-      
+
       console.log(response);
-      setMessage("Appointment successfully updated!");
+      setMessage("Appointment successfully created!");
       setError(null);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           setError(
             error.response.data.message || "An error occurred, please try again"
-            
           );
         } else if (error.request) {
           setError("No response from server. Check internet connection");
@@ -91,17 +48,31 @@ export default function EditAppointment() {
   };
 
   return (
-    <section className="">
-      <Header />
-      <Navigation />
-    
-    <div className="flex  md:flex-row sm:flex-row  gap-4   max-w-3xl mx-auto  xs:px-4 py-2 mb-4 rounded-lg shadow-md  border-box">
-          <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex flex-col items-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 border-box">
+      <div className="bg-blue-950 w-full text-white px-4 py-2 rounded-md flex justify-center">
+        <button
+          className="w-full text-white font-semibold py-2 rounded-md"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+          aria-controls="collapseForm"
+        >
+          + Add Appointment
+        </button>
+      </div>
+
+      <div
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${
+          isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        }`}
+        id="collapseForm"
+      >
+        <div className="flex flex-col mt-2 p-4 rounded-md shadow bg-white">
+          <form className="w-full space-y-4 border-box" onSubmit={handleSubmit(onSubmit)}>
             {/* Owner Name */}
             <div className="flex flex-col">
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 <label
-                  className="md:w-32 sm:w-32 xs:w-full w-full block text-left text-cyan-900"
+                  className="md:w-32 sm:w-32 xs:w-full w-full block text-left"
                   htmlFor="owner_name"
                 >
                   Owner Name
@@ -126,7 +97,7 @@ export default function EditAppointment() {
             {/* Pet Name */}
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <label
-                className="md:w-32 sm:w-32 xs:w-full w-full block text-left text-blue-800"
+                className="md:w-32 sm:w-32 xs:w-full w-full block text-left"
                 htmlFor="pets_name"
               >
                 Pet Name
@@ -221,12 +192,12 @@ export default function EditAppointment() {
                 type="submit"
                 className="bg-blue-950 hover:bg-blue-700 font-bold py-2 px-4 rounded text-white"
               >
-                Update
+                Add appointment
               </button>
             </div>
           </form>
         </div>
-        <Footer />
-        </section>
+      </div>
+    </div>
   );
 }
