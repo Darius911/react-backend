@@ -6,19 +6,13 @@ import FilterForm from "./FilterForm";
 import Navigation from "./Navigation";
 import Header from "./Header";
 import Footer from "./Footer";
-import Pagination from "./Pagination"; //  Importuojame Pagination komponentą
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AppointmentsAll() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  
-  // Puslapiavimas
-  const [currentPage, setCurrentPage] = useState(0);
-  const appointmentsPerPage = 5;
-  
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -28,6 +22,7 @@ export default function AppointmentsAll() {
         setAppointments(response.data.data);
       } catch (error) {
         console.log(error.message);
+        
         setError("An error occurred. Please try again.");
       } finally {
         setLoading(false);
@@ -52,15 +47,10 @@ export default function AppointmentsAll() {
   if (loading && appointments.length === 0) return <p>Įkeliama...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
-  // Puslapiavimas
-  const offset = currentPage * appointmentsPerPage;
-  const currentAppointments = appointments.slice(offset, offset + appointmentsPerPage);
-  const pageCount = Math.ceil(appointments.length / appointmentsPerPage);
-
   return (
-    <section>
-      <Header />
-      <Navigation />
+    <section className="">
+      <Header/>
+      <Navigation/>
       <CreateAppointment />
       <FilterForm 
         setAppointments={setAppointments} 
@@ -69,7 +59,7 @@ export default function AppointmentsAll() {
       />
       
       <div>
-        {currentAppointments.map((appointment) => (
+        {appointments.map((appointment) => (
           <AppointmentCard 
             key={appointment.id} 
             appointment={appointment} 
@@ -77,11 +67,7 @@ export default function AppointmentsAll() {
           />
         ))}
       </div>
-
-      {/* Naudojame sukurtą Pagination komponentą */}
-      <Pagination pageCount={pageCount} onPageChange={({ selected }) => setCurrentPage(selected)} />
-
-      <Footer />
+      <Footer/>
     </section>
   );
 }

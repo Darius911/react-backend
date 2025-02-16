@@ -53,7 +53,7 @@ export default function EditAppointment() {
     if (formData.time) {
       formData.time = new Date(
         `1970-01-01T${formData.time}`
-      ).toLocaleTimeString("en-US", {
+      ).toLocaleTimeString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",
       });
@@ -218,7 +218,7 @@ export default function EditAppointment() {
               })}
             ></textarea>
           </div>
-              {/* status */}
+
           <div className="flex flex-col sm:flex-row items-center gap-4 "> 
             {user?.role === "admin" && ( // Tik adminas gali matyti šį lauką
               <>
